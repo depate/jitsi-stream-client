@@ -22,7 +22,7 @@ let connection = null;
 let room = null;
 
 // zu mappende namen.
-let remoteMappingName = new Array(9);
+let remoteMappingName = new Array(3);
 // alle verfügbaren tracks mit id -> {audio: track, video: track, position: number}
 let tracks = {};
 
