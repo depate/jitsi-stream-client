@@ -16,5 +16,7 @@ Since this client will join the Jitsi Meeting, its name is "Streamer". It has no
 
 Below the Video Placeholdes there a Input Boxes for the Usernames. You have to enter the exact name of the participant into the box and hit the reload Button to apply.
 
+On the very bottom of the page is a List with all current users in the Meeting Room.
+
 Ask your users that they give themself a uniqe username. Best are simple names without blanks and any special symbols. Please avoid duplicate names.
 
