@@ -59,6 +59,7 @@
     <form onsubmit="connect(event)">
         <input type="text" id="room-name" placeholder="Room name"/><br />
         <input type="text" id="room-password" placeholder="Room Password" />
+        <input type="checkbox" id="use-local-video" /> Use local Video
         <button disabled id="room-name-button">Connect</button>
     </form>
 </div>
@@ -185,5 +186,8 @@
         Change audio output device
         <select id="audioOutputSelect" onchange="changeAudioOutput(this)"></select>
     </div>
+
+
+    <video autoplay='autoplay' id="localVideo"></video>
 </body>
 </html>

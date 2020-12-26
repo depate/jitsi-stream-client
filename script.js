@@ -25,6 +25,8 @@ let room = null;
 let remoteMappingName = new Array(9);
 // alle verfügbaren tracks mit id -> {audio: track, video: track, position: number}
 let tracks = {};
+let useLocalVideo = false;
+let isJoined = false;
 
 /**
  *
@@ -266,12 +268,19 @@ function connect(e) {
     e.preventDefault();
     const roomName = $('#room-name').val();
 
+    if($('#use-local-video').is(":checked")) {
+        useLocalVideo = true
+    } else {
+        useLocalVideo = false
+    }
+
     room = connection.initJitsiConference(roomName, confOptions);
     room.setDisplayName("Streamer");
     room.on(JitsiMeetJS.events.conference.TRACK_ADDED, onRemoteTrack);
     room.on(JitsiMeetJS.events.conference.TRACK_REMOVED, onRemoteTrackRemove);
     room.on(JitsiMeetJS.events.conference.USER_JOINED, onUserJoin);
     room.on(JitsiMeetJS.events.conference.USER_LEFT, onUserLeft);
+    room.on(JitsiMeetJS.events.conference.CONFERENCE_JOINED, onConferenceJoined);
     room.on(JitsiMeetJS.events.conference.DISPLAY_NAME_CHANGED, onNameChange);
     room.join($('#room-password').val());
     $('#room-selector').hide();
@@ -283,6 +292,13 @@ function connect(e) {
         $('.volume-' + i + ' input[type="range"]').val(0.7);
         $('.video-' + i + ' video').on('resize', onVideoResize).width(videoSize.width).height(videoSize.height);
         $('.video-' + i + ' span').text(remoteMappingName[i]);
+    }
+}
+
+function onConferenceJoined() {
+    isJoined = true;
+    for (let i = 0; i < localTracks.length; i++) {
+        addLocalTrack(localTracks[i]);
     }
 }
 
@@ -347,6 +363,7 @@ function reload(position) {
 
 function leave() {
     room.leave();
+    isJoined = false;
     $('#room').hide();
     $('#room-selector').show();
 }
@@ -400,4 +417,31 @@ if (JitsiMeetJS.mediaDevices.isDeviceChangeAvailable('output')) {
 
 if(window.localStorage.getItem('remoteMappingName') !== null) {
     remoteMappingName = JSON.parse(window.localStorage.getItem('remoteMappingName'));
+}
+
+let localTracks = [];
+
+function onLocalTracks(tracks) {
+    localTracks = tracks;
+    for (let i = 0; i < localTracks.length; i++) {
+        if (localTracks[i].getType() === 'video') {
+            localTracks[i].attach($(`#localVideo`)[0]);
+        }
+        if(isJoined) {
+            addLocalTrack(localTracks[i]);
+        }
+    }
+}
+
+JitsiMeetJS.createLocalTracks({ devices: [ 'video' ] })
+    .then(onLocalTracks)
+    .catch(error => {
+        throw error;
+    });
+
+
+function addLocalTrack(track) {
+    if(useLocalVideo) {
+        room.addTrack(track);
+    }
 }
