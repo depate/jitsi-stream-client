@@ -358,6 +358,7 @@ function onConferenceJoined() {
 function unload() {
     room.leave();
     connection.disconnect();
+    return null;
 }
 
 /**
@@ -432,8 +433,7 @@ function changeAudioOutput(selected) { // eslint-disable-line no-unused-vars
     JitsiMeetJS.mediaDevices.setAudioOutputDevice(selected.value);
 }
 
-$(window).bind('beforeunload', unload);
-$(window).bind('unload', unload);
+window.onbeforeunload = unload;
 
 JitsiMeetJS.setLogLevel(JitsiMeetJS.logLevels.WARN);
 
