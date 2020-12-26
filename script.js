@@ -366,6 +366,9 @@ function leave() {
     isJoined = false;
     $('#room').hide();
     $('#room-selector').show();
+    for(let i in localTracks) {
+        room.removeTrack(localTracks[i]);
+    }
 }
 
 function updateParticipantList() {
