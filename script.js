@@ -29,6 +29,53 @@ let useLocalVideo = false;
 let isJoined = false;
 
 /**
+ *              HTML Builder
+ *              a bit hacky.. but hey, i needed it fast.
+ */
+function initHtml(rows, cols) {
+    let rootElem = $('#video-container')
+    rootElem.empty();
+    let elemCounter = 0
+    for(let i = 0; i < rows; i++) {
+        let rowElem = $(document.createElement("div"))
+        rowElem.addClass("row");
+        for(let j = 0; j < cols; j++) {
+            let colElem = $(document.createElement("div"))
+            colElem.addClass(`col-md-${Math.floor(12/cols)} video video-${elemCounter++}`);
+            colElem.append(`
+                <video autoplay='autoplay'></video>
+                <audio autoplay='autoplay'></audio>
+                <span class="name"></span>
+            `)
+            rowElem.append(colElem)
+        }
+        rootElem.append(rowElem)
+    }
+    elemCounter = 0;
+    for(let i = 0; i < rows; i++) {
+        let rowElem = $(document.createElement("div"))
+        rowElem.addClass("row");
+        for(let j = 0; j < cols; j++) {
+            let colElem = $(document.createElement("div"))
+            colElem.addClass("volume-slider col volume-" + elemCounter);
+            colElem.append(`
+            <span class="volume">70%</span>
+            <input type="range" min="0" max="1" step="0.01" value="0.7" oninput="setLevel(${elemCounter}, this.value)">
+            <input type="text" onchange="setName(${elemCounter}, this.value)" placeholder="username1">
+            <button onclick="reload(${elemCounter})">Reload</button>
+            `)
+            elemCounter++;
+            rowElem.append(colElem);
+        }
+        rootElem.append(rowElem);
+    }
+    rootElem.append(`
+            <button onclick="leave()">Leave Conference</button>
+            <p class="available-users"></p>
+        `)
+}
+
+/**
  *
  *              MIDI SECTION
  */
@@ -273,6 +320,9 @@ function connect(e) {
     } else {
         useLocalVideo = false
     }
+    initHtml($('#rows').val(), $('#cols').val())
+    videoSize.height = $('#height').val();
+    videoSize.width = $('#width').val();
 
     room = connection.initJitsiConference(roomName, confOptions);
     room.setDisplayName("Streamer");
