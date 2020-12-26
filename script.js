@@ -35,15 +35,15 @@ let isJoined = false;
  */
 function initHtml(rows, cols) {
     // calculate video element sizes
-    let windowHeight = document.body.clientHeight;
-    let windowWidth = document.body.clientWidth;
+    let windowHeight = window.innerHeight;
+    let windowWidth = window.innerWidth;
     console.log(windowHeight);
-    let margin = 8; // 3px margin on each side, 1px border on each side
+    let margin = 6; // 3px margin on each side
 
     let maxWidth = windowWidth / cols - margin
-    let maxHeight = windowHeight / rows - margin - 0 - 28; // 32 -> size added for nametag; 28px per row for control elements
+    let maxHeight = windowHeight / rows - margin - 24 - 28 - 6; // 24 -> size added for nametag; 28px per row for control elements; idontknow where the 6px appear xD
 
-    if(maxWidth/16*9 < maxHeight) {
+    if(maxWidth/16*9 <= maxHeight) {
         videoSize.width = maxWidth;
         videoSize.height = maxWidth/16*9;
     } else {
@@ -63,8 +63,8 @@ function initHtml(rows, cols) {
         for(let j = 0; j < cols; j++) {
             let colElem = $(document.createElement("div"));
             colElem.addClass(`video video-${elemCounter++}`);
-            colElem.width(videoSize.width + 2*margin);
-            colElem.height(videoSize.height + 2*margin + 24);
+            colElem.width(videoSize.width + margin);
+            colElem.height(videoSize.height + margin + 24);
             colElem.css("display", "inline-block");
             colElem.append(`
                 <video autoplay='autoplay' width="${videoSize.width}" height="${videoSize.height}"></video>
