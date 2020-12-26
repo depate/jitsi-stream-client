@@ -303,13 +303,16 @@ function onConnectionSuccess() {
  * Resizes the video element according to maximum available width and height. Respects input aspect ratio.
  */
 function onVideoResize(event) {
+    console.log(event)
     const video = $(event.target)[0];
+    console.log(video)
     const width = video.videoWidth;
     const height = video.videoHeight;
+    console.log("video sizes", width, height)
 
     let targetWidth = videoSize.width;
-    let targetHeight = videoSize.height
-    ;
+    let targetHeight = videoSize.height;
+    console.log("target sizes", targetWidth, targetHeight)
     if(width > videoSize.width) {
         targetHeight *= videoSize.width / width
     }
@@ -346,8 +349,6 @@ function connect(e) {
         useLocalVideo = false
     }
     initHtml($('#rows').val(), $('#cols').val())
-    videoSize.height = $('#height').val();
-    videoSize.width = $('#width').val();
 
     room = connection.initJitsiConference(roomName, confOptions);
     room.setDisplayName("Streamer");
