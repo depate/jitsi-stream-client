@@ -70,6 +70,8 @@
 <div style="display: none" id="room">
     <div class="container-fluid" id="video-container">
     </div>
+    <button onclick="toggleMute()">Toggle all mute</button>
+    Currently: <span id="muted-status">Unmuted</span>
 </div>
 
 
@@ -77,8 +79,6 @@
         Change audio output device
         <select id="audioOutputSelect" onchange="changeAudioOutput(this)"></select>
     </div>
-
-
     <video autoplay='autoplay' id="localVideo"></video>
 </body>
 </html>

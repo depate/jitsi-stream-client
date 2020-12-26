@@ -20,6 +20,7 @@ const videoSize = {
 
 let connection = null;
 let room = null;
+let muted = false;
 
 // zu mappende namen.
 let remoteMappingName = new Array(9);
@@ -419,6 +420,17 @@ function leave() {
     $('#room-selector').show();
     for(let i in localTracks) {
         room.removeTrack(localTracks[i]);
+    }
+}
+
+function toggleMute() {
+    let audioElems = $("audio");
+    muted = !muted;
+    audioElems.prop("muted", muted)
+    if(muted) {
+        $('#muted-status').text("Muted")
+    } else {
+        $('#muted-status').text("Unmuted")
     }
 }
 
