@@ -22,8 +22,11 @@
         }
         video {
             display: block;
-            margin: 0 auto;
+            margin: 3px;
             border: 1px dotted grey;
+        }
+        .video-row {
+            width: 100%;
         }
         .volume-slider {
             text-align: center;
@@ -60,8 +63,6 @@
         <input type="text" id="room-name" placeholder="Room name"/><br />
         <input type="text" id="room-password" placeholder="Room Password" /><br />
         <input type="checkbox" id="use-local-video" /> Use local Video<br />
-        <input type="text" id="width" value="624" /> Width of video elements<br />
-        <input type="text" id="height" value="351" /> Height of video elements<br />
         <input type="text" id="cols" value="3" /> Column count<br />
         <input type="text" id="rows" value="3" /> Row count<br />
         <button disabled id="room-name-button">Connect</button>

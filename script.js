@@ -34,17 +34,40 @@ let isJoined = false;
  *              a bit hacky.. but hey, i needed it fast.
  */
 function initHtml(rows, cols) {
+    // calculate video element sizes
+    let windowHeight = document.body.clientHeight;
+    let windowWidth = document.body.clientWidth;
+    console.log(windowHeight);
+    let margin = 8; // 3px margin on each side, 1px border on each side
+
+    let maxWidth = windowWidth / cols - margin
+    let maxHeight = windowHeight / rows - margin - 0 - 28; // 32 -> size added for nametag; 28px per row for control elements
+
+    if(maxWidth/16*9 < maxHeight) {
+        videoSize.width = maxWidth;
+        videoSize.height = maxWidth/16*9;
+    } else {
+        videoSize.width = maxHeight*16/9;
+        videoSize.height = maxHeight;
+    }
+
+    // clear video container
     let rootElem = $('#video-container')
     rootElem.empty();
-    let elemCounter = 0
+    let elemCounter = 0 // for the element container id's
+
+    // populate video elements
     for(let i = 0; i < rows; i++) {
-        let rowElem = $(document.createElement("div"))
-        rowElem.addClass("row");
+        let rowElem = $(document.createElement("div"));
+        rowElem.addClass("video-row");
         for(let j = 0; j < cols; j++) {
-            let colElem = $(document.createElement("div"))
-            colElem.addClass(`col-md-${Math.floor(12/cols)} video video-${elemCounter++}`);
+            let colElem = $(document.createElement("div"));
+            colElem.addClass(`video video-${elemCounter++}`);
+            colElem.width(videoSize.width + 2*margin);
+            colElem.height(videoSize.height + 2*margin + 24);
+            colElem.css("display", "inline-block");
             colElem.append(`
-                <video autoplay='autoplay'></video>
+                <video autoplay='autoplay' width="${videoSize.width}" height="${videoSize.height}"></video>
                 <audio autoplay='autoplay'></audio>
                 <span class="name"></span>
             `)
@@ -52,6 +75,7 @@ function initHtml(rows, cols) {
         }
         rootElem.append(rowElem)
     }
+    // populate audio controls
     elemCounter = 0;
     for(let i = 0; i < rows; i++) {
         let rowElem = $(document.createElement("div"))
