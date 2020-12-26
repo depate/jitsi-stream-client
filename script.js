@@ -522,8 +522,23 @@ function onLocalTracks(tracks) {
         }
     }
 }
+let camera = "";
+navigator.mediaDevices.enumerateDevices()
+    .then(function(devices) {
+        devices.forEach(function(device) {
+            console.log(device.kind + ": " + device.label +
+                " id = " + device.deviceId);
+            if(device.label.indexOf("NDI") != -1) {
+                camera = device.deviceId;
+            }
+        });
+    })
+    .catch(function(err) {
+        console.log(err.name + ": " + err.message);
+    });
 
-JitsiMeetJS.createLocalTracks({ devices: [ 'video' ] })
+
+JitsiMeetJS.createLocalTracks({ devices: [ 'video' ], cameraDeviceId: camera })
     .then(onLocalTracks)
     .catch(error => {
         throw error;
