@@ -40,8 +40,8 @@ function initHtml(rows, cols) {
     console.log(windowHeight);
     let margin = 6; // 3px margin on each side
 
-    let maxWidth = windowWidth / cols - margin
-    let maxHeight = windowHeight / rows - margin - 24 - 28 - 6; // 24 -> size added for nametag; 28px per row for control elements; idontknow where the 6px appear xD
+    let maxWidth = (windowWidth-12) / cols - margin
+    let maxHeight = (windowHeight-12) / rows - margin - 24 - 28 - 6; // 24 -> size added for nametag; 28px per row for control elements; idontknow where the 6px appear xD
 
     if(maxWidth/16*9 <= maxHeight) {
         videoSize.width = maxWidth;
